@@ -1,12 +1,57 @@
 import React, {Component} from 'react';
-import {Layout} from 'antd';
+import {Dropdown, Layout, Menu} from 'antd';
+import {removeStorage} from "../../../utils/localstorage";
+import './index.less'
+import {DownOutlined} from "@ant-design/icons";
+import {getStorage} from "../../../utils/localstorage";
 
 const {Header} = Layout;
 
+const logout = () => {
+    removeStorage("token")
+    removeStorage("user")
+    window.location.href = '/'
+}
+const menu = (
+    <Menu>
+        <Menu.Item>
+            <a target="_blank" rel="noopener noreferrer" href="/">
+                个人中心
+            </a>
+        </Menu.Item>
+        <Menu.Item>
+            <a target="_blank" rel="noopener noreferrer" onClick={logout} href={'javaScript(#)'}>
+                退出登录
+            </a>
+        </Menu.Item>
+    </Menu>
+);
+
 class HeaderPage extends Component {
+
+
     render() {
+        let user = getStorage('user');
+        let userName
+        if (user){
+            userName = user.userName;
+        }
+
         return (
-            <Header className="site-layout-background" style={{padding: 0}}/>
+            <Header className="site-layout-background header" style={{padding: 0}}>
+                <h1 className={'header-title'}>测试系统</h1>
+                <div className={'header-right'}>
+                    <Dropdown overlay={menu}>
+                        <div>
+                            <a href={'javaScript(#)'} className="user-info" onClick={e => e.preventDefault()}>
+                                {
+                                    userName
+                                } <DownOutlined/>
+                            </a>
+                        </div>
+                    </Dropdown>,
+                </div>
+            </Header>
         );
     }
 }

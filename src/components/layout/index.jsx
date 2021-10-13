@@ -12,7 +12,7 @@ class FrameOut extends Component {
         return (
             <Layout style={{minHeight: '100vh'}}>
                 {/*左边栏*/}
-                <SiderPage/>
+                <SiderPage {...this.props}/>
                 <Layout className="site-layout">
                     {/*头部*/}
                     <HeaderPage/>

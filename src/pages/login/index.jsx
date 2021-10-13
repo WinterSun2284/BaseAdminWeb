@@ -1,8 +1,10 @@
 import React, {Component} from 'react';
-import {Form, Input, Button} from 'antd'
+import {Form, Input, Button, message} from 'antd'
 import {UserOutlined, LockOutlined} from '@ant-design/icons'
 import './index.less'
 import Logo from './images/logo.png'
+import axios from '../../components/service/request';
+import {getStorage, setStorage} from '../../utils/localstorage'
 
 /**
  * 登录路由组件
@@ -10,7 +12,22 @@ import Logo from './images/logo.png'
 class Login extends Component {
 
     onFinish = (values) => {
-        console.log('Received values of form: ', values);
+        axios.post("/login", {userAccount: values.account, password: values.password})
+            .then(res => {
+                if (res.code === 200) {
+                    setStorage("user", res.data)
+                    setStorage("token", res.data.token);
+                    let uri = getStorage('current_uri');
+                    if (uri){
+                        window.location.href = uri
+                    }else {
+                        window.location.href = '/'
+                    }
+                } else {
+                    message.error(res.msg)
+                }
+            })
+            .catch(err => message.error(err));
     };
 
     render() {
@@ -32,7 +49,7 @@ class Login extends Component {
                             onFinish={this.onFinish}
                         >
                             <Form.Item
-                                name="username"
+                                name="account"
                                 rules={[{required: true, message: '请输入用户名!'}]}
                             >
                                 <Input prefix={<UserOutlined className="site-form-item-icon"/>} placeholder="用户名"/>

@@ -30,7 +30,7 @@ class App extends Component {
 
         //显示私有的路由
         return (
-            <FrameOut>
+            <FrameOut {...this.props}>
                 <Switch>
                     {
                         routes.map(r => {

@@ -39,7 +39,7 @@ const privateRoutes = [
             },
             {
                 pathName: '/admin/user/watermark',
-                name: "用户管理",
+                name: "标识码管理",
                 icon: <TagsOutlined/>,
                 component: Watermark
             }

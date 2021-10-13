@@ -4,13 +4,20 @@ import {HashRouter, Route, Switch, Redirect} from 'react-router-dom'
 import {commonRoutes} from './routers'
 import './index.less';
 import App from './App';
+import {getToken} from "./utils/localstorage.js"
+import './components/service/request'
 
 ReactDOM.render(
     <HashRouter>
         <Switch>
             {/*私有的路由，必须经过验证才能访问*/}
             <Route path={"/admin"} render={(rootProps) => {
-                return <App {...rootProps}/>
+                let token = getToken()
+                if (token) {
+                    return <App {...rootProps}/>
+                } else {
+                    return <Redirect to={'/login'}/>
+                }
             }}/>
             {/*公共的路由*/}
             {
