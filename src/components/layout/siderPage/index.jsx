@@ -3,6 +3,7 @@ import {Menu, Layout} from "antd";
 import {privateRoutes} from "../../../routers";
 import {Link} from "react-router-dom";
 import {setStorage} from "../../../utils/localstorage";
+
 const {Sider} = Layout;
 
 class SiderPage extends Component {
@@ -19,9 +20,9 @@ class SiderPage extends Component {
             let pathname = _this.props.history.location.pathname;
             if (pathname) {
                 _this.setState({
-                    selectedKey:pathname
+                    selectedKey: pathname
                 })
-                setStorage("current_uri",pathname)
+                setStorage("current_uri", pathname)
             }
 
         }
@@ -54,17 +55,10 @@ class SiderPage extends Component {
     render() {
         const {collapsed} = this.state;
         const elements = this.tree(privateRoutes);
-        let selectedKey = this.state.selectedKey;
-        let split = selectedKey.split('/');
-        let currentOpen=selectedKey;
-        if (split.length>2){
-            currentOpen = '/admin/'+split[2];
-        }
-        console.log(currentOpen)
         return (
             <Sider collapsible collapsed={collapsed} onCollapse={this.onCollapse}>
                 <div className="logo"/>
-                <Menu theme="dark" openKeys={[currentOpen]}
+                <Menu theme="dark"
                       selectedKeys={[this.state.selectedKey]} mode="inline">
                     {elements}
                 </Menu>

@@ -1,18 +1,24 @@
 import React, {Component} from 'react';
 import axios from '../../components/service/request.js';
-import {Button} from "antd";
+import {Button,message} from "antd";
+
 
 class Admin extends Component {
 
     state = {
-        message: "",
+        message: null,
     };
 
     loadData=()=>{
         axios.get("/admin").then(res=>{
-            this.setState({
-                message:res
-            })
+            if (res.code===200){
+                this.setState({
+                    message:res.data
+                })
+            }else {
+                message.error(res.msg)
+            }
+
         })
     }
 
