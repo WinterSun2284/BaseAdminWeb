@@ -23,7 +23,6 @@ instance.interceptors.request.use(config => {
 })
 
 instance.interceptors.response.use(res => {
-
     //token无效，跳转到登录页面
     if (res.data.code === 407) {
         Modal.error({
