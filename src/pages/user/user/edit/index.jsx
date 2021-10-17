@@ -13,19 +13,20 @@ class EditModal extends Component {
                 isModalVisible:this.props.isModalVisible
             })
         }
-        console.log(this.props)
     }
 
 
     handleOk = () => {
+        this.props.cancelModal()
     };
 
      handleCancel = () => {
-    };
+         this.props.cancelModal()
+     };
 
     render() {
         return (
-            <Modal title="Basic Modal" visible={this.isModalVisible} onOk={this.handleOk} onCancel={this.handleCancel}>
+            <Modal title="Basic Modal" visible={this.state.isModalVisible} onOk={this.handleOk} onCancel={this.handleCancel}>
                 <p>Some contents...</p>
                 <p>Some contents...</p>
                 <p>Some contents...</p>

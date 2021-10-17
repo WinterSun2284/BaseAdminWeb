@@ -21,7 +21,8 @@ class User extends Component {
         loading: false,
         editParam: {
             isModalVisible: false,
-            value: {}
+            value: {},
+            // cancelModal:this,.
         }
     };
 
@@ -77,6 +78,14 @@ class User extends Component {
         })
     }
 
+    //用于关闭modal页面
+    cancelModal =()=>{
+        let param = {isModalVisible: false, value: {}}
+        this.setState({
+            editParam: param
+        })
+    }
+
     fetch = (params = {}) => {
         this.setState({loading: true});
         let randomuserParams = getRandomuserParams(params);
@@ -113,7 +122,7 @@ class User extends Component {
                     loading={loading}
                     onChange={this.handleTableChange}
                 />
-                <EditModal {...this.state.editParam}/>
+                <EditModal {...this.state.editParam} cancelModal={this.cancelModal}/>
             </div>
         );
     }

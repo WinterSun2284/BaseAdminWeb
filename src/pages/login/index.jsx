@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Form, Input, Button, message} from 'antd'
+import {Form, Input, Button, message, Spin} from 'antd'
 import {UserOutlined, LockOutlined} from '@ant-design/icons'
 import './index.less'
 import Logo from './images/logo.png'
@@ -11,21 +11,36 @@ import {getStorage, setStorage} from '../../utils/localstorage'
  */
 class Login extends Component {
 
+    state = {
+        loading: false
+    }
+
     onFinish = (values) => {
+        this.setState({
+            loading: true
+        })
         axios.post("/login", {userAccount: values.account, password: values.password})
             .then(res => {
-                if (res.code === 200) {
-                    setStorage("user", res.data)
-                    setStorage("token", res.data.token);
-                    let uri = getStorage('current_uri');
-                    if (uri){
-                        window.location.href = uri
-                    }else {
-                        window.location.href = '/'
-                    }
-                } else {
-                    message.error(res.msg)
-                }
+               try {
+                   if (res.code === 200) {
+                       setStorage("user", res.data)
+                       setStorage("token", res.data.token);
+                       let uri = getStorage('current_uri');
+                       if (uri) {
+                           window.location.href = uri
+                       } else {
+                           window.location.href = '/'
+                       }
+                   } else {
+                       message.error(res.msg)
+                   }
+               }catch (e){
+                   message.error(e);
+               }finally {
+                   this.setState({
+                       loading: false
+                   })
+               }
             })
             .catch(err => message.error(err));
     };
@@ -41,7 +56,7 @@ class Login extends Component {
                 {/*中间登录框*/}
                 <section className={'login-content'}>
                     <h2>用户登录</h2>
-                    <div>
+                    <Spin spinning={this.state.loading}>
                         <Form
                             name="login"
                             className="login-form"
@@ -77,7 +92,7 @@ class Login extends Component {
                                 </a>
                             </Form.Item>
                         </Form>
-                    </div>
+                    </Spin>
                 </section>
             </div>
         );

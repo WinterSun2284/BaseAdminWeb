@@ -1,10 +1,11 @@
-import {Login, NotFound, System, User, Admin, Watermark} from "../pages";
+import {Login, NotFound, System, User, Admin, Watermark, Role} from "../pages";
 import {
     UserOutlined,
     TagsOutlined,
     SettingOutlined,
     HomeOutlined
 } from "@ant-design/icons";
+import MyIcon from '../components/MyIcon'
 
 const commonRoutes = [
     {
@@ -36,6 +37,12 @@ const privateRoutes = [
                 name: "用户管理",
                 icon: <UserOutlined/>,
                 component: User
+            },
+            {
+                pathName: '/admin/user/role',
+                name: "角色管理",
+                icon: <MyIcon type={'icon-jiaoseguanli'} />,
+                component: Role
             },
             {
                 pathName: '/admin/user/watermark',

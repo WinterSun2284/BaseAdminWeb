@@ -28,6 +28,11 @@ const Watermark = Loadable({
     loading: Loading,
 })
 
+const Role = Loadable({
+    loader: () => import("./user/role"),
+    loading: Loading,
+})
+
 
 export {
     Login,
@@ -35,5 +40,6 @@ export {
     Admin,
     NotFound,
     User,
-    Watermark
+    Watermark,
+    Role
 }
