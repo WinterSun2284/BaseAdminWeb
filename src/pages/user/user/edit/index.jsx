@@ -1,38 +1,143 @@
-import React, {Component} from 'react';
-import {Modal} from "antd";
+import React from 'react';
+import {Col, Form, Input, message, Modal, Row, Select, Spin} from "antd";
+import axios from "../../../../components/service/request";
+import {removeStorage} from "../../../../utils/localstorage";
 
-class EditModal extends Component {
+const EditModal = ({isModalVisible, cancelModal, value, reload}) => {
 
-    state={
-        isModalVisible:false,
-    }
+    const [confirmLoading, setConfirmLoading] = React.useState(false);
+    const [spinLoading, setSpinLoading] = React.useState(false);
+    const [roleOptions, setRoleOptions] = React.useState("新增用户");
+    const [title, setTitle] = React.useState(false);
 
-    componentDidUpdate() {
-        if(this.props.isModalVisible!==this.state.isModalVisible){
-            this.setState({
-                isModalVisible:this.props.isModalVisible
+    const [form] = Form.useForm();
+    let Option = Select.Option;
+
+    React.useEffect(() => {
+
+        if (isModalVisible) {
+            setSpinLoading(true)
+            axios.get('/admin/user/user/getRoles').then(res => {
+                let options = []
+                if (res.data) {
+                    options.push(res.data.map(r => {
+                        return <Option value={r.id}>{r.roleName}</Option>
+                    }))
+                }
+                setRoleOptions(options)
+                setSpinLoading(false)
+            }).catch(err => {
+                message.error(err)
             })
+
+            if (value) {
+                setTitle("修改用户信息")
+                let roleIds = value.roles.map(r => {
+                    return r.id
+                })
+                form.setFieldsValue({
+                    id: value.id,
+                    userAccount: value.userAccount,
+                    userName: value.userName,
+                    roleIds: roleIds
+                });
+            }
+
         }
-    }
+    }, [form, isModalVisible, value]);
 
 
-    handleOk = () => {
-        this.props.cancelModal()
+    const handleOk = () => {
+        setConfirmLoading(true)
+        form.validateFields()
+            .then((values) => {
+                form.resetFields();
+                axios.post("/admin/user/user/save", values).then(res => {
+                    if (res.code===200){
+                        message.info(res.msg)
+                        cancelModal()
+                        reload()
+                    }else if (res.code===5001){
+                        Modal.error({
+                            title: '登录失效',
+                            content: "您修改过当前登录的账号的密码，请重新登录！",
+                            onOk: (values) => {
+                                removeStorage('token')
+                                removeStorage('user')
+                                window.location.href = '/'
+                            }
+                        });
+                    }else {
+                        message.info(res.msg)
+                    }
+                })
+            })
+            .catch((info) => {
+            }).finally(() => {
+            setConfirmLoading(false)
+        });
     };
 
-     handleCancel = () => {
-         this.props.cancelModal()
-     };
 
-    render() {
-        return (
-            <Modal title="Basic Modal" visible={this.state.isModalVisible} onOk={this.handleOk} onCancel={this.handleCancel}>
-                <p>Some contents...</p>
-                <p>Some contents...</p>
-                <p>Some contents...</p>
-            </Modal>
-        );
-    }
+    return (
+        <Modal title={title}
+               visible={isModalVisible}
+               onOk={handleOk}
+               onCancel={cancelModal}
+               okText={'保存'}
+               confirmLoading={confirmLoading}
+               cancelText={'取消'}
+               width={800}
+        >
+            <Spin spinning={spinLoading}>
+                <Form form={form}
+                    // layout={{span: 2, offset: 2}}
+                      labelAlign={'right'}
+                      layout={'vertical'}
+
+                >
+                    <Form.Item name="id" hidden={true}>
+                        <Input/>
+                    </Form.Item>
+                    <Row gutter={16}>
+                        <Col span={12}>
+                            <Form.Item name="userAccount" label="账号" rules={[{required: true, message: "必须填写账号！"}]}>
+                                {
+                                    value?<Input disabled={true}/>:
+                                        <Input />
+                                }
+                            </Form.Item>
+                        </Col>
+                        <Col span={12}>
+                            <Form.Item name="userName" label="用户名" rules={[{required: true, message: "必须填写用户名！"}]}>
+                                <Input/>
+                            </Form.Item>
+                        </Col>
+                    </Row>
+                    <Row gutter={16}>
+                        <Col span={12}>
+                            <Form.Item name="roleIds" label="角色" rules={[{required: true, message: "至少选择一个角色！"}]}>
+                                <Select
+                                    placeholder="请选择角色"
+                                    style={{width: '100%'}}
+                                    allowClear
+                                    mode="multiple"
+                                >
+                                    {roleOptions}
+                                </Select>
+                            </Form.Item>
+                        </Col>
+                        <Col span={12}>
+                            <Form.Item name="password" label="密码">
+                                <Input.Password placeholder={'密码不填写为不修改'}/>
+                            </Form.Item>
+                        </Col>
+                    </Row>
+                </Form>
+            </Spin>
+
+        </Modal>
+    );
 }
 
 export default EditModal;

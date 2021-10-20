@@ -6,7 +6,7 @@ import Modal from "antd/es/modal/Modal";
 // axios.defaults.timeout = 5000;
 
 const instance = axios.create({
-    baseURL: "http://localhost:8080",
+    baseURL: "http://192.168.1.109:8080",
     timeout: 500000,
     headers: {
         'Content-Type': "application/json;charset=utf-8"

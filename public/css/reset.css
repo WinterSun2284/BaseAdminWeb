@@ -82,3 +82,7 @@ html,body{
     width: 100%;
     height: 100%;
 }
+.button-default{
+    margin-right: 8px;
+    /*margin-bottom: 12px;*/
+}
