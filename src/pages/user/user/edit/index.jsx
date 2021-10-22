@@ -53,11 +53,11 @@ const EditModal = ({isModalVisible, cancelModal, value, reload}) => {
             .then((values) => {
                 form.resetFields();
                 axios.post("/admin/user/user/save", values).then(res => {
-                    if (res.code===200){
+                    if (res.code === 200) {
                         message.info(res.msg)
                         cancelModal()
                         reload()
-                    }else if (res.code===5001){
+                    } else if (res.code === 5001) {
                         Modal.error({
                             title: '登录失效',
                             content: "您修改过当前登录的账号的密码，请重新登录！",
@@ -67,7 +67,7 @@ const EditModal = ({isModalVisible, cancelModal, value, reload}) => {
                                 window.location.href = '/'
                             }
                         });
-                    }else {
+                    } else {
                         message.info(res.msg)
                     }
                 })
@@ -78,12 +78,27 @@ const EditModal = ({isModalVisible, cancelModal, value, reload}) => {
         });
     };
 
+    const handleCancel = () => {
+        form.resetFields()
+        cancelModal()
+    }
+
+    const checkAccount = (value): res => {
+        return new Promise(resolve => {
+            axios.post('/admin/user/user/checkAccount',
+                value)
+                .then(res => {
+                    resolve(res)
+                })
+        });
+
+    }
 
     return (
         <Modal title={title}
                visible={isModalVisible}
                onOk={handleOk}
-               onCancel={cancelModal}
+               onCancel={handleCancel}
                okText={'保存'}
                confirmLoading={confirmLoading}
                cancelText={'取消'}
@@ -101,10 +116,27 @@ const EditModal = ({isModalVisible, cancelModal, value, reload}) => {
                     </Form.Item>
                     <Row gutter={16}>
                         <Col span={12}>
-                            <Form.Item name="userAccount" label="账号" rules={[{required: true, message: "必须填写账号！"}]}>
+                            <Form.Item name="userAccount" label="账号" rules={[
                                 {
-                                    value?<Input disabled={true}/>:
-                                        <Input />
+                                    required: true,
+                                    message: "必须填写账号！",
+                                },
+                                ({getFieldValue}) => ({
+                                    async validator(_, accountValue) {
+                                        if (accountValue && !value) {
+                                            let res = await checkAccount(accountValue);
+                                            if (res.code === 200) {
+                                                return Promise.resolve();
+                                            } else {
+                                                return Promise.reject(new Error(res.msg));
+                                            }
+                                        }
+                                    }
+                                })
+                            ]}>
+                                {
+                                    value ? <Input disabled={true}/> :
+                                        <Input/>
                                 }
                             </Form.Item>
                         </Col>
@@ -128,9 +160,16 @@ const EditModal = ({isModalVisible, cancelModal, value, reload}) => {
                             </Form.Item>
                         </Col>
                         <Col span={12}>
-                            <Form.Item name="password" label="密码">
-                                <Input.Password placeholder={'密码不填写为不修改'}/>
-                            </Form.Item>
+                            {
+                                value ? <Form.Item name="password" label="密码">
+                                        <Input.Password placeholder={'密码不填写为不修改'}/>
+                                    </Form.Item>
+                                    :
+                                    <Form.Item name="password" label="密码"
+                                               rules={[{required: true, message: "密码是必填的！"}]}>
+                                        <Input.Password/>
+                                    </Form.Item>
+                            }
                         </Col>
                     </Row>
                 </Form>
