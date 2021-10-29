@@ -36,6 +36,15 @@ instance.interceptors.response.use(res => {
         });
 
     }
+    if (res.data.code === 5002) {
+        Modal.error({
+            title: '无权访问',
+            content: '您没有权限访问此页面，请联系管理员！将为您跳转到首页！',
+            onOk: (values) => {
+                window.location.href = '/'
+            }
+        });
+    }
 
     return res.data
 }, error => {

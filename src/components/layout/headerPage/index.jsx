@@ -4,6 +4,7 @@ import {removeStorage} from "../../../utils/localstorage";
 import './index.less'
 import {DownOutlined} from "@ant-design/icons";
 import {getStorage} from "../../../utils/localstorage";
+import {Link} from "react-router-dom";
 
 const {Header} = Layout;
 
@@ -15,9 +16,7 @@ const logout = () => {
 const menu = (
     <Menu>
         <Menu.Item>
-            <a target="_blank" rel="noopener noreferrer" href="/">
-                个人中心
-            </a>
+            <Link to={'/admin/individual'}>个人中心</Link>
         </Menu.Item>
         <Menu.Item>
             <a target="_blank" rel="noopener noreferrer" onClick={logout} href={'javaScript(#)'}>

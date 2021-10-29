@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import {Switch, Redirect, Route} from 'react-router-dom'
 import './App.less';
-import {privateRoutes} from "./routers";
+import {hideRoutes, privateRoutes} from "./routers";
 import FrameOut from "./components/layout";
 
 class App extends Component {
@@ -28,6 +28,11 @@ class App extends Component {
             }
         }
 
+        for (let hideRoute of hideRoutes) {
+            routes.push(<Route path={hideRoute.pathName} key={hideRoute.pathName}
+                               component={hideRoute.component}/>)
+        }
+
         //显示私有的路由
         return (
             <FrameOut {...this.props}>
@@ -38,7 +43,7 @@ class App extends Component {
                         })
                     }
                     <Route path={privateRoutes[0].pathName} key={privateRoutes[0].pathName}
-                           component={privateRoutes[0].component}/>)
+                           component={privateRoutes[0].component} exact/> )
                     <Redirect from={'/admin'} to={'/admin'} exact/>
                     <Redirect to={'/404'}/>
                 </Switch>

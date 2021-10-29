@@ -1,3 +1,4 @@
+import './index.less'
 import React, {Component} from 'react';
 import {message, Table, Row, Col} from "antd";
 import axios from "../../components/service/request";
@@ -90,6 +91,44 @@ class component extends Component {
         this.setState({selectedRowKeys});
     };
 
+    handleChange = (e) => {
+        e.preventDefault()
+        let search = {[e.target.name]: e.target.value}
+        this.setState({
+            pagination: Object.assign(this.state.pagination, search)
+        })
+    }
+
+    //删除选中数据
+    deleteSelect = () => {
+        let selectedRowKeys = this.state.selectedRowKeys;
+
+        if (selectedRowKeys.length === 0) {
+            message.error("请选择数据！")
+            return
+        }
+
+        this.setState({
+            deleteLoading: true
+        }, () => {
+            axios.post(this.state.baseUri+'/delete', selectedRowKeys.join(',')).then(res => {
+                if (res.code === 200) {
+                    message.info(res.msg)
+                    this.reload()
+                } else {
+                    message.error(res.msg)
+                    this.reload()
+                }
+            }).catch(err => {
+                message.error(err)
+            }).finally(() => {
+                this.setState({
+                    deleteLoading: false
+                })
+            })
+        })
+    }
+
     render() {
         const {data, pagination, loading, selectedRowKeys} = this.state;
         const rowSelection = {
@@ -99,10 +138,13 @@ class component extends Component {
         return (
             <>
                 <Row gutter={[8, 12]}>
-                    <Col span={12} className={'function-left'}>
+                    <Col span={24} >
                         {
                             this.getSearchRow()
                         }
+                    </Col>
+                    <Col span={12} className={'function-left'}>
+
                     </Col>
                     <Col span={12} className={'function-right'}>
                         {

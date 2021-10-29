@@ -1,4 +1,3 @@
-import './index.less'
 import component from "../../../common/component";
 import {Button, Col, Input, message, Popconfirm, Row, Select} from "antd";
 import EditModal from "./edit";
@@ -105,13 +104,6 @@ class User extends component {
         })
     }
 
-    handleChange = (e) => {
-        e.preventDefault()
-        let search = {[e.target.name]: e.target.value}
-        this.setState({
-            pagination: Object.assign(this.state.pagination, search)
-        })
-    }
 
     handleSelectChange = (value) => {
         console.log(value)
@@ -197,8 +189,7 @@ class User extends component {
                     删除选中
                 </Button>
             </Popconfirm>
-            <Button className={'button-delete button-default'} onClick={this.handleAdd} type="primary"
-                    loading={this.state.deleteLoading}>
+            <Button className={'button-delete button-default'} onClick={this.handleAdd} type="primary">
                 新增用户
             </Button>
         </>;

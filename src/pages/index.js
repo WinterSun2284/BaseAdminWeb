@@ -33,6 +33,11 @@ const Role = Loadable({
     loading: Loading,
 })
 
+const Individual = Loadable({
+    loader: () => import("./individual"),
+    loading: Loading,
+})
+
 
 export {
     Login,
@@ -41,5 +46,6 @@ export {
     NotFound,
     User,
     Watermark,
-    Role
+    Role,
+    Individual
 }

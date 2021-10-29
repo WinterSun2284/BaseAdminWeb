@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {Menu, Layout} from "antd";
 import {privateRoutes} from "../../../routers";
 import {Link} from "react-router-dom";
-import {setStorage} from "../../../utils/localstorage";
+import {getStorage, setStorage} from "../../../utils/localstorage";
 
 const {Sider} = Layout;
 
@@ -55,13 +55,29 @@ class SiderPage extends Component {
         this.setState({collapsed});
     };
 
+    clickMenu = (_this, pathName) => {
+        setStorage('current_uri', pathName)
+    }
+
     tree(data) {
         let menu = []
+        let user = getStorage('user');
+        let modules = user.modules;
+        let moduleIds = []
+        for (let module of modules) {
+            moduleIds.push(module.id)
+        }
         if (data) {
             for (let item of data) {
+                if (item.isFirst) {
+                    if (moduleIds.indexOf(item.id) === -1) {
+                        continue;
+                    }
+                }
                 if (!item.children) {
                     menu.push(<Menu.Item key={item.pathName} icon={item.icon}>
-                        <Link to={{pathname: item.pathName}}>{item.name}</Link></Menu.Item>)
+                        <Link to={{pathname: item.pathName}}
+                              onClick={(e) => this.clickMenu(e, item.pathName)}>{item.name}</Link></Menu.Item>)
                 } else {
                     menu.push(
                         <Menu.SubMenu key={item.pathName} icon={item.icon} title={item.name}>

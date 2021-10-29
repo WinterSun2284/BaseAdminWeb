@@ -1,6 +1,90 @@
 import component from "../../../common/component";
+import {Button, Col, DatePicker, Input, message, Popconfirm, Row} from "antd";
+import EditModal from "./edit";
+import axios from "../../../components/service/request";
+
+const { RangePicker } = DatePicker;
 
 class Role extends component {
+
+    edit = (value) => {
+        let param = {isModalVisible: true, value: value}
+        this.setState({
+            editParam: param
+        })
+    }
+
+    delete = value => {
+        let roleIds = []
+        roleIds.push(value.id + '')
+        axios.post(this.state.baseUri+'/delete', roleIds.join(',')).then(res => {
+            if (res.code === 200) {
+                message.info(res.msg)
+                this.reload()
+            } else {
+                message.error(res.msg)
+                this.reload()
+            }
+        }).catch(err => {
+            message.error(err)
+        })
+    }
+
+    handleAdd = () => {
+        this.setState({
+            editParam: {
+                isModalVisible: true,
+                value: null,
+            },
+        })
+    }
+
+    handleDate=(value,dateStrings)=>{
+        let search = {'startTime':dateStrings[0],'endTime':dateStrings[1]}
+        this.setState({
+            pagination: Object.assign(this.state.pagination, search)
+        })
+    }
+
+    getButtonRow(): null {
+        return <>
+            <Popconfirm
+                title="你确定永久删除选中的数据吗？"
+                onConfirm={this.deleteSelect}
+                okText="确定"
+                cancelText="取消"
+            >
+                <Button className={'button-delete button-default'} type="primary" danger
+                        loading={this.state.deleteLoading}>
+                    删除选中
+                </Button>
+            </Popconfirm>
+            <Button className={'button-delete button-default'} onClick={this.handleAdd} type="primary">
+                新增角色
+            </Button>
+        </>;
+    }
+
+    getSearchRow(): null {
+        return <Input.Group>
+            <Row gutter={8}>
+                <Col span={6}>
+                    <Input onChange={this.handleChange} allowClear placeholder="角色名" onPressEnter={this.reload}
+                           name={'roleName'}/>
+                </Col>
+                <Col span={6}>
+                    <Input onChange={this.handleChange} allowClear placeholder="备注" onPressEnter={this.reload}
+                           name={'roleDesc'}/>
+                </Col>
+                <Col span={7}>
+                    <RangePicker placeholder={['创建开始时间','创建结束时间']} onChange={this.handleDate}  showTime />
+                </Col>
+                <Col span={3}>
+                    <Button type={'primary'} onClick={this.reload}>搜索</Button>
+                </Col>
+            </Row>
+        </Input.Group>;
+    }
 
     getColumns(): null {
         return [
@@ -8,7 +92,6 @@ class Role extends component {
                 title: '角色名',
                 dataIndex: 'roleName',
                 key: 'roleName',
-                // sorter: true
             },
             {
                 title: '模块',
@@ -28,11 +111,38 @@ class Role extends component {
                 title: '创建时间',
                 dataIndex: 'createTime',
                 key: 'createTime',
-                // sorter: true
+                sorter: true
             },
+            {
+                title: '操作',
+                dataIndex: 'operation',
+                render: (_, record) => {
+                    return <>
+                        <Button type="primary" className={'button-default'} size={'small'}
+                                onClick={() => this.edit(record)}>
+                            编辑
+                        </Button>
+                        <Popconfirm
+                            title="你确定永久删除此条数据吗？"
+                            onConfirm={() => this.delete(record)}
+                            okText="确定"
+                            cancelText="取消"
+                        >
+                            <Button type="primary" className={'button-default'} danger size={'small'}>
+                                删除
+                            </Button>
+                        </Popconfirm>
+
+                    </>
+                },
+            }
         ];
     }
 
+    getEditModal(): null {
+        return <EditModal {...this.state.editParam} cancelModal={this.cancelModal} reload={this.reload}
+                          baseUir={this.state.baseUri}/>
+    }
 }
 
 export default Role;
