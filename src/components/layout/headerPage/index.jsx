@@ -15,10 +15,10 @@ const logout = () => {
 }
 const menu = (
     <Menu>
-        <Menu.Item>
+        <Menu.Item key={1}>
             <Link to={'/admin/individual'}>个人中心</Link>
         </Menu.Item>
-        <Menu.Item>
+        <Menu.Item key={2}>
             <a target="_blank" rel="noopener noreferrer" onClick={logout} href={'javaScript(#)'}>
                 退出登录
             </a>

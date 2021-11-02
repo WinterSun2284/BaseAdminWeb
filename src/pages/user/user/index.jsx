@@ -106,7 +106,6 @@ class User extends component {
 
 
     handleSelectChange = (value) => {
-        console.log(value)
         let search = {roleIds: [value]}
         this.setState({
             pagination: Object.assign(this.state.pagination, search)

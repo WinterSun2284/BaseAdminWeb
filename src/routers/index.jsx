@@ -63,6 +63,14 @@ const privateRoutes = [
         icon: <SettingOutlined/>,
         isFirst:true,
         id:3,
+        children:  [
+            {
+                pathName: '/admin/test/watermark',
+                name: "标识码管理",
+                icon: <TagsOutlined/>,
+                component: Watermark
+            }
+        ]
     },
     {
         pathName: '/admin/system',

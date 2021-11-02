@@ -33,7 +33,6 @@ const EditModal = ({isModalVisible, cancelModal, value, reload, baseUir}) => {
                 let moduleIds = value.modules.map(m => {
                     return m.id
                 })
-                console.log(value)
                 form.setFieldsValue({
                     id: value.id,
                     roleName: value.roleName,

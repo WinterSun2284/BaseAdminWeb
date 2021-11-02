@@ -13,6 +13,7 @@ class SiderPage extends Component {
         collapsed: false,
         selectedKey: this.props.history.location.pathname,
         openKeys: ['/admin'],
+        firstHide: true
     };
 
     componentDidMount() {
@@ -39,7 +40,6 @@ class SiderPage extends Component {
                 openKeys.push(url)
             }
         }
-        console.log(openKeys)
         this.setState({
             openKeys: openKeys
         })
@@ -47,12 +47,13 @@ class SiderPage extends Component {
 
     onOpenChange = keys => {
         this.setState({
-            openKeys: keys
+            openKeys: keys[keys.length - 1],
+            firstHide: false
         })
     };
 
     onCollapse = collapsed => {
-        this.setState({collapsed});
+        this.setState({collapsed, firstHide: collapsed});
     };
 
     clickMenu = (_this, pathName) => {
@@ -98,7 +99,7 @@ class SiderPage extends Component {
                 <div className="logo"/>
                 <Menu theme="dark"
                     // defaultSelectedKeys={[this.props.history.location.pathname]}
-                      openKeys={this.state.openKeys}
+                      openKeys={this.state.firstHide ? null : [this.state.openKeys]}
                       onOpenChange={this.onOpenChange}
                       selectedKeys={[this.props.history.location.pathname]} mode="inline">
                     {elements}
