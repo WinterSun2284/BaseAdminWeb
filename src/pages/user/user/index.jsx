@@ -24,29 +24,6 @@ class User extends component {
         })
     }
 
-    delete = record => {
-        let userIds = []
-        userIds.push(record.id + '')
-        axios.post('/admin/user/user/delete', userIds.join(',')).then(res => {
-            if (res.code === 200) {
-                message.info(res.msg)
-                this.reload()
-            } else {
-                message.error(res.msg)
-                this.reload()
-            }
-        }).catch(err => {
-            message.error(err)
-        })
-    }
-
-    edit = record => {
-        let param = {isModalVisible: true, value: record}
-        this.setState({
-            editParam: param
-        })
-    }
-
     getColumns(): [] {
         return [
             {
@@ -95,16 +72,6 @@ class User extends component {
         ];
     }
 
-    handleAdd = () => {
-        this.setState({
-            editParam: {
-                isModalVisible: true,
-                value: null,
-            },
-        })
-    }
-
-
     handleSelectChange = (value) => {
         let search = {roleIds: [value]}
         this.setState({
@@ -144,35 +111,6 @@ class User extends component {
                 </Col>
             </Row>
         </Input.Group>;
-    }
-
-    deleteSelect = () => {
-        let selectedRowKeys = this.state.selectedRowKeys;
-
-        if (selectedRowKeys.length === 0) {
-            message.error("请选择账号！")
-            return
-        }
-
-        this.setState({
-            deleteLoading: true
-        }, () => {
-            axios.post('/admin/user/user/delete', selectedRowKeys.join(',')).then(res => {
-                if (res.code === 200) {
-                    message.info(res.msg)
-                    this.reload()
-                } else {
-                    message.error(res.msg)
-                    this.reload()
-                }
-            }).catch(err => {
-                message.error(err)
-            }).finally(() => {
-                this.setState({
-                    deleteLoading: false
-                })
-            })
-        })
     }
 
     getButtonRow(): null {

@@ -1,46 +1,13 @@
 import component from "../../../common/component";
-import {Button, Col, DatePicker, Input, message, Popconfirm, Row} from "antd";
+import {Button, Col, DatePicker, Input, Popconfirm, Row} from "antd";
 import EditModal from "./edit";
-import axios from "../../../components/service/request";
 
-const { RangePicker } = DatePicker;
+const {RangePicker} = DatePicker;
 
 class Role extends component {
 
-    edit = (value) => {
-        let param = {isModalVisible: true, value: value}
-        this.setState({
-            editParam: param
-        })
-    }
-
-    delete = value => {
-        let roleIds = []
-        roleIds.push(value.id + '')
-        axios.post(this.state.baseUri+'/delete', roleIds.join(',')).then(res => {
-            if (res.code === 200) {
-                message.info(res.msg)
-                this.reload()
-            } else {
-                message.error(res.msg)
-                this.reload()
-            }
-        }).catch(err => {
-            message.error(err)
-        })
-    }
-
-    handleAdd = () => {
-        this.setState({
-            editParam: {
-                isModalVisible: true,
-                value: null,
-            },
-        })
-    }
-
-    handleDate=(value,dateStrings)=>{
-        let search = {'startTime':dateStrings[0],'endTime':dateStrings[1]}
+    handleDate = (value, dateStrings) => {
+        let search = {'startTime': dateStrings[0], 'endTime': dateStrings[1]}
         this.setState({
             pagination: Object.assign(this.state.pagination, search)
         })
@@ -77,7 +44,7 @@ class Role extends component {
                            name={'roleDesc'}/>
                 </Col>
                 <Col span={7}>
-                    <RangePicker placeholder={['创建开始时间','创建结束时间']} onChange={this.handleDate}  showTime />
+                    <RangePicker placeholder={['创建开始时间', '创建结束时间']} onChange={this.handleDate} showTime/>
                 </Col>
                 <Col span={3}>
                     <Button type={'primary'} onClick={this.reload}>搜索</Button>

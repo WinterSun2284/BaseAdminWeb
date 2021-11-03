@@ -37,6 +37,15 @@ const Individual = Loadable({
     loader: () => import("./individual"),
     loading: Loading,
 })
+const DbConn = Loadable({
+    loader: () => import("./database/dbConn"),
+    loading: Loading,
+})
+
+const DbType = Loadable({
+    loader: () => import("./database/dbType"),
+    loading: Loading,
+})
 
 
 export {
@@ -47,5 +56,7 @@ export {
     User,
     Watermark,
     Role,
-    Individual
+    Individual,
+    DbConn,
+    DbType
 }

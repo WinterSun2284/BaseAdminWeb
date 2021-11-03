@@ -12,7 +12,7 @@ class SiderPage extends Component {
     state = {
         collapsed: false,
         selectedKey: this.props.history.location.pathname,
-        openKeys: ['/admin'],
+        openKeys: '/admin',
         firstHide: true
     };
 
@@ -41,13 +41,14 @@ class SiderPage extends Component {
             }
         }
         this.setState({
-            openKeys: openKeys
+            openKeys: openKeys,
+            firstHide: false
         })
     }
 
     onOpenChange = keys => {
         this.setState({
-            openKeys: keys[keys.length - 1],
+            openKeys: [keys[keys.length - 1]],
             firstHide: false
         })
     };
@@ -57,12 +58,28 @@ class SiderPage extends Component {
     };
 
     clickMenu = (_this, pathName) => {
+        let split = pathName.split('/');
+        let openKeys = []
+        let url = '';
+        for (let splitElement of split) {
+            if (splitElement !== '') {
+                url += '/' + splitElement
+                openKeys.push(url)
+            }
+        }
+        this.setState({
+            openKeys: openKeys,
+            firstHide: false
+        })
         setStorage('current_uri', pathName)
     }
 
     tree(data) {
         let menu = []
         let user = getStorage('user');
+        if (!user){
+            return
+        }
         let modules = user.modules;
         let moduleIds = []
         for (let module of modules) {
@@ -99,7 +116,7 @@ class SiderPage extends Component {
                 <div className="logo"/>
                 <Menu theme="dark"
                     // defaultSelectedKeys={[this.props.history.location.pathname]}
-                      openKeys={this.state.firstHide ? null : [this.state.openKeys]}
+                      openKeys={this.state.firstHide ? null : this.state.openKeys}
                       onOpenChange={this.onOpenChange}
                       selectedKeys={[this.props.history.location.pathname]} mode="inline">
                     {elements}

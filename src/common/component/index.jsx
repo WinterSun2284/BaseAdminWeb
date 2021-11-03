@@ -41,6 +41,22 @@ class component extends Component {
         this.reload()
     }
 
+    handleAdd = () => {
+        this.setState({
+            editParam: {
+                isModalVisible: true,
+                value: null,
+            },
+        })
+    }
+
+    edit = record => {
+        let param = {isModalVisible: true, value: record}
+        this.setState({
+            editParam: param
+        })
+    }
+
     reload = () => {
         const {pagination} = this.state;
         this.fetch(pagination);
@@ -99,6 +115,26 @@ class component extends Component {
         })
     }
 
+    handleDelete=(param)=>{
+        axios.post(this.state.baseUri+'/delete', param).then(res => {
+            if (res.code === 200) {
+                message.info(res.msg)
+                this.reload()
+            } else {
+                message.error(res.msg)
+                this.reload()
+            }
+        }).catch(err => {
+            message.error(err)
+        })
+    }
+
+    delete = value => {
+        let ids = []
+        ids.push(value.id + '')
+        this.handleDelete(ids.join(','))
+    }
+
     //删除选中数据
     deleteSelect = () => {
         let selectedRowKeys = this.state.selectedRowKeys;
@@ -111,20 +147,9 @@ class component extends Component {
         this.setState({
             deleteLoading: true
         }, () => {
-            axios.post(this.state.baseUri+'/delete', selectedRowKeys.join(',')).then(res => {
-                if (res.code === 200) {
-                    message.info(res.msg)
-                    this.reload()
-                } else {
-                    message.error(res.msg)
-                    this.reload()
-                }
-            }).catch(err => {
-                message.error(err)
-            }).finally(() => {
-                this.setState({
-                    deleteLoading: false
-                })
+            this.handleDelete(selectedRowKeys.join(','))
+            this.setState({
+                deleteLoading: false
             })
         })
     }
