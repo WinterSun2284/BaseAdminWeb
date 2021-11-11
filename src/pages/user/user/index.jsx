@@ -1,7 +1,8 @@
-import component from "../../../common/component";
+import component from "@common/component";
 import {Button, Col, Input, message, Popconfirm, Row, Select} from "antd";
 import EditModal from "./edit";
-import axios from "../../../components/service/request";
+import axios from "@components/service/request";
+import EditAndDelBtn from '@/components/EditAndDelBtn'
 
 const Option = Select.Option
 
@@ -49,24 +50,7 @@ class User extends component {
                 title: '操作',
                 dataIndex: 'operation',
                 render: (_, record) => {
-                    return <>
-                        <Button type="primary" className={'button-default'} size={'small'}
-                                onClick={() => this.edit(record)}>
-                            编辑
-                        </Button>
-                        <Popconfirm
-                            title="你确定永久删除此条数据吗？"
-                            onConfirm={() => this.delete(record)}
-                            // onCancel={cancel}
-                            okText="确定"
-                            cancelText="取消"
-                        >
-                            <Button type="primary" className={'button-default'} danger size={'small'}>
-                                删除
-                            </Button>
-                        </Popconfirm>
-
-                    </>
+                    return <EditAndDelBtn record={record}/>
                 },
             }
         ];

@@ -47,6 +47,11 @@ const DbType = Loadable({
     loading: Loading,
 })
 
+const ClassThem = Loadable({
+    loader: () => import("./categoryLevel/ClassThem"),
+    loading: Loading,
+})
+
 
 export {
     Login,
@@ -58,5 +63,6 @@ export {
     Role,
     Individual,
     DbConn,
-    DbType
+    DbType,
+    ClassThem
 }

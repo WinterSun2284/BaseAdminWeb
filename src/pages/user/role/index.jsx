@@ -1,6 +1,7 @@
 import component from "../../../common/component";
 import {Button, Col, DatePicker, Input, Popconfirm, Row} from "antd";
 import EditModal from "./edit";
+import EditAndDelBtn from "@/components/EditAndDelBtn";
 
 const {RangePicker} = DatePicker;
 
@@ -84,23 +85,7 @@ class Role extends component {
                 title: '操作',
                 dataIndex: 'operation',
                 render: (_, record) => {
-                    return <>
-                        <Button type="primary" className={'button-default'} size={'small'}
-                                onClick={() => this.edit(record)}>
-                            编辑
-                        </Button>
-                        <Popconfirm
-                            title="你确定永久删除此条数据吗？"
-                            onConfirm={() => this.delete(record)}
-                            okText="确定"
-                            cancelText="取消"
-                        >
-                            <Button type="primary" className={'button-default'} danger size={'small'}>
-                                删除
-                            </Button>
-                        </Popconfirm>
-
-                    </>
+                    return <EditAndDelBtn record={record}/>
                 },
             }
         ];

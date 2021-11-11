@@ -1,4 +1,4 @@
-import {Login, NotFound, System, User, Admin, Watermark, Role, Individual, DbConn, DbType} from "../pages";
+import {Login, NotFound, System, User, Admin, Watermark, Role, Individual, DbConn, DbType, ClassThem} from "../pages";
 import {
     UserOutlined,
     TagsOutlined,
@@ -47,6 +47,22 @@ const privateRoutes = [
                 name: "数据库类型管理",
                 icon: <MyIcon type={'icon-shujukuleixing'}/>,
                 component: DbType
+            }
+        ]
+    },
+    {
+        pathName: '/admin/categoryLevel',
+        component: System,
+        name: "分级分类元管理",
+        icon: <SettingOutlined/>,
+        isFirst: true,
+        id: 3,
+        children: [
+            {
+                pathName: '/admin/categoryLevel/classThem',
+                name: "主题分类管理",
+                icon: <TagsOutlined/>,
+                component: ClassThem
             }
         ]
     },

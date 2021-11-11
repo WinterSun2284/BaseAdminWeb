@@ -18,7 +18,8 @@ class component extends Component {
             // cancelModal:this,.
         },
         selectedRowKeys: [],
-        deleteLoading: false
+        deleteLoading: false,
+        searchFlag:false
     };
 
     getColumns() {
@@ -39,6 +40,12 @@ class component extends Component {
 
     componentDidMount() {
         this.reload()
+    }
+
+    handleSearchFlag=(flag)=>{
+        this.setState({
+            searchFlag:flag
+        })
     }
 
     handleAdd = () => {
