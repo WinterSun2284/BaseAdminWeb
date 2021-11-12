@@ -1,18 +1,8 @@
 const CracoLessPlugin = require('craco-less');
-const path = require('path')
+const path = require("path");
+const resolve = dir => path.resolve(__dirname, dir);
 
 module.exports = {
-    webpack: {
-        alias: {
-            "@": path.resolve(__dirname, "./src"),
-            "@share": path.resolve(__dirname, "./src/share"),
-            "@mocks": path.resolve(__dirname, "./src/mocks"),
-            "@static": path.resolve(__dirname, "./src/static"),
-            "@containers": path.resolve(__dirname, "./src/containers"),
-            "@components": path.resolve(__dirname, "./src/components"),
-            "@common": path.resolve(__dirname, "./src/compoenet"),
-        }
-    },
     plugins: [
         {
             plugin: CracoLessPlugin,
@@ -26,4 +16,16 @@ module.exports = {
             },
         },
     ],
+    webpack: {
+        alias: {
+
+            "@": resolve( "src"),
+            "@share": resolve( "src/share"),
+            "@mocks": resolve( "src/mocks"),
+            "@static": resolve( "src/static"),
+            "@containers": resolve( "src/containers"),
+            "@components": resolve( "src/components"),
+            "@common": resolve( "src/common"),
+        }
+    },
 };

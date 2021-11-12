@@ -85,7 +85,7 @@ class Role extends component {
                 title: '操作',
                 dataIndex: 'operation',
                 render: (_, record) => {
-                    return <EditAndDelBtn record={record}/>
+                    return <EditAndDelBtn record={record} edit={this.edit} del={this.delete}/>
                 },
             }
         ];
