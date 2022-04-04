@@ -20,12 +20,10 @@ module.exports = {
         alias: {
 
             "@": resolve( "src"),
-            "@share": resolve( "src/share"),
-            "@mocks": resolve( "src/mocks"),
-            "@static": resolve( "src/static"),
-            "@containers": resolve( "src/containers"),
             "@components": resolve( "src/components"),
             "@common": resolve( "src/common"),
+            "@utils": resolve( "src/utils"),
+            "@api": resolve( "src/api"),
         }
     },
 };

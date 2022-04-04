@@ -91,7 +91,7 @@ class User extends component {
                 {/*    </Select>*/}
                 {/*</Col>*/}
                 <Col span={3}>
-                    <Button type={'primary'} onClick={this.reload}>搜索</Button>
+                    <Button type={'primary'} onClick={this.reload} edit={this.edit} del={this.delete}>搜索</Button>
                 </Col>
             </Row>
         </Input.Group>;

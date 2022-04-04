@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {getToken, removeStorage} from '../../utils/localstorage'
+import {getToken, removeStorage} from '@/utils/localstorage'
 import Modal from "antd/es/modal/Modal";
 
 // axios.defaults.baseURL = 'http://localhost:8080';
@@ -48,7 +48,7 @@ instance.interceptors.response.use(res => {
 
     return res.data
 }, error => {
-    return error;
+    return  Promise.reject(error);
 })
 
 export default instance;

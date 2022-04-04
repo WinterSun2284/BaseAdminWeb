@@ -38,7 +38,7 @@ class HeaderPage extends Component {
 
         return (
             <Header className="site-layout-background header" style={{padding: 0}}>
-                <h1 className={'header-title'}>测试系统</h1>
+                <h1 className={'header-title'}>开箱即用的后台管理系统</h1>
                 <div className={'header-right'}>
                     <Dropdown overlay={menu}>
                         <div>

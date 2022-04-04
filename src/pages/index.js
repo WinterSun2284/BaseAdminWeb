@@ -1,5 +1,5 @@
 import Loadable from 'react-loadable'
-import Loading from '../components/Loading'
+import Loading from '@/components/Loading'
 
 // 路由懒加载
 
@@ -23,10 +23,6 @@ const User = Loadable({
     loader: () => import("./user/user"),
     loading: Loading,
 })
-const Watermark = Loadable({
-    loader: () => import("./user/watermarkCode"),
-    loading: Loading,
-})
 
 const Role = Loadable({
     loader: () => import("./user/role"),
@@ -37,20 +33,8 @@ const Individual = Loadable({
     loader: () => import("./individual"),
     loading: Loading,
 })
-const DbConn = Loadable({
-    loader: () => import("./database/dbConn"),
-    loading: Loading,
-})
 
-const DbType = Loadable({
-    loader: () => import("./database/dbType"),
-    loading: Loading,
-})
 
-const ClassThem = Loadable({
-    loader: () => import("./categoryLevel/ClassThem"),
-    loading: Loading,
-})
 
 
 export {
@@ -59,10 +43,6 @@ export {
     Admin,
     NotFound,
     User,
-    Watermark,
     Role,
     Individual,
-    DbConn,
-    DbType,
-    ClassThem
 }
