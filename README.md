@@ -4,6 +4,11 @@
 开箱即用的后台管理-前端
 快速搭建后台管理系统基本框架，只需要添加新的页面即可正式开发
 
+#### 页面展示
+![输入图片说明](public/images/image.png)
+
+![输入图片说明](public/images/image2.png)
+
 #### 软件架构
 采用ant.design + react 作为前端技术，后台服务端使用spring boot
 [后台服务端项目地址](https://gitee.com/WinterSunQVQ/base-admin)
@@ -15,6 +20,7 @@
 2.  在pages文件夹中的index.js将对应的组件暴露出去
 3.  在routers文件夹的index.jsx中添加对应的组件路由
 4.  刷新页面即可看到新增的页面
+5. 默认登录账号：admin，密码：123456
 
 #### 参与贡献
 
